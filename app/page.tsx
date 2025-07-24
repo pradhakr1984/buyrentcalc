@@ -6,6 +6,7 @@ import { defaultInputs, CoreInputs, CalculationOutput } from '@/lib/types';
 import { calculate } from '@/lib/calc';
 import { InputField } from '@/components/InputField';
 import { ResultCard } from '@/components/ResultCard';
+import { ComparisonChart } from '@/components/ComparisonChart';
 
 export default function Home() {
   const { control } = useForm<CoreInputs>({
@@ -211,6 +212,7 @@ export default function Home() {
                   description={`After ${watchedInputs.horizonYears} years`}
                 />
               </div>
+              <ComparisonChart data={results.yearlyData} />
             </>
           ) : (
             <p className="text-center text-muted text-lg mt-10">Enter valid inputs to see results.</p>
