@@ -13,9 +13,10 @@ export function calculate(inputs: CoreInputs): CalculationOutput {
     maintenancePct = 0.01,
     insuranceHOAAnnual = 1800,
     rentInflationPct = 0.03,
+    generalInflationPct = 0.025,
     sellingCostPct = 0.06,
     closingCostBuyPct = 0.025,
-    marginalTaxRatePct = 0.28,
+    marginalTaxRatePct = 0.25,
     horizonYears,
     useTaxShield = true,
   } = inputs;
@@ -35,9 +36,6 @@ export function calculate(inputs: CoreInputs): CalculationOutput {
   let cumulativeRentCost = 0;
   let rentPortfolioValue = downPayment + purchasePrice * closingCostBuyPct;
   let homeValue = purchasePrice;
-
-  let buyTotalCost = cumulativeBuyCost;
-  let rentTotalCost = 0;
 
   for (let year = 1; year <= horizonYears; year++) {
     let yearlyMortgageInterest = 0;
@@ -67,7 +65,7 @@ export function calculate(inputs: CoreInputs): CalculationOutput {
     
     cumulativeBuyCost += annualBuyCost;
 
-    const annualRent = monthlyRent * 12 * Math.pow(1 + rentInflationPct, year -1);
+    const annualRent = monthlyRent * 12 * Math.pow(1 + rentInflationPct, year - 1);
     cumulativeRentCost += annualRent;
 
     const buyEquity = homeValue - remainingMortgage;
@@ -86,19 +84,12 @@ export function calculate(inputs: CoreInputs): CalculationOutput {
     });
   }
 
-  const sellProceeds = homeValue * (1 - sellingCostPct);
-  const finalBuyNetWorth = sellProceeds - remainingMortgage;
-  const finalRentNetWorth = rentPortfolioValue;
-  
-  buyTotalCost = cumulativeBuyCost;
-  rentTotalCost = cumulativeRentCost;
+  const buyCashFlows = yearlyData.map(y => y.buyNetCost);
+  const rentCashFlows = yearlyData.map(y => y.rentNetCost);
 
   const calculateNPV = (cashFlows: number[], rate: number) => {
     return cashFlows.reduce((acc, val, i) => acc + val / Math.pow(1 + rate, i + 1), 0);
   };
-  
-  const buyCashFlows = yearlyData.map(y => y.buyNetCost);
-  const rentCashFlows = yearlyData.map(y => y.rentNetCost);
 
   const buyNpv = calculateNPV(buyCashFlows, altReturnPct);
   const rentNpv = calculateNPV(rentCashFlows, altReturnPct);
@@ -113,8 +104,8 @@ export function calculate(inputs: CoreInputs): CalculationOutput {
 
   return {
     yearlyData,
-    buyTotalCost,
-    rentTotalCost,
+    buyTotalCost: yearlyData[yearlyData.length - 1].buyTotalCost,
+    rentTotalCost: yearlyData[yearlyData.length - 1].rentTotalCost,
     buyNpv,
     rentNpv,
     breakEvenYear,

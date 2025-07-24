@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 interface ResultCardProps {
   title: string;
   value: string;
@@ -6,10 +8,10 @@ interface ResultCardProps {
 
 export function ResultCard({ title, value, description }: ResultCardProps) {
   return (
-    <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-      <h3 className="text-lg font-semibold leading-none tracking-tight">{title}</h3>
-      <p className="text-3xl font-bold my-2">{value}</p>
-      <p className="text-sm text-muted-foreground">{description}</p>
+    <div className="bg-card rounded-lg shadow-card p-6 border border-border flex flex-col gap-2">
+      <h3 className="text-lg font-semibold tracking-tight text-gray-900">{title}</h3>
+      <p className="text-3xl font-bold text-primary my-1">{value}</p>
+      <p className="text-sm text-muted">{description}</p>
     </div>
   );
 } 

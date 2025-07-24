@@ -12,6 +12,7 @@ interface InputFieldProps {
   max: number;
   step: number;
   isPercentage?: boolean;
+  isCurrency?: boolean;
 }
 
 export function InputField({
@@ -22,19 +23,22 @@ export function InputField({
   max,
   step,
   isPercentage,
+  isCurrency = true,
 }: InputFieldProps) {
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 mb-4">
       <div className="flex justify-between">
         <Label>{label}</Label>
         <span className="text-sm font-medium">
           {isPercentage
             ? `${(value * 100).toFixed(2)}%`
-            : value.toLocaleString('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                maximumFractionDigits: 0,
-              })}
+            : isCurrency
+              ? value.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  maximumFractionDigits: 0,
+                })
+              : value}
         </span>
       </div>
       <div className="flex items-center space-x-4">

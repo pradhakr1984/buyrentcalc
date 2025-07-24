@@ -20,43 +20,61 @@ export const coreInputsSchema = z.object({
   useTaxShield: z.boolean().optional(),
 });
 
-export type CoreInputs = z.infer<typeof coreInputsSchema>;
+export interface CoreInputs {
+  purchasePrice: number;
+  downPaymentPct: number; // 0.2 = 20%
+  mortgageRatePct: number; // annual
+  mortgageTermYears: number;
+  monthlyRent: number;
+  altReturnPct: number;
+  propertyTaxPct: number;
+  homeAppreciationPct: number;
+  maintenancePct?: number;
+  insuranceHOAAnnual?: number;
+  rentInflationPct?: number;
+  generalInflationPct?: number;
+  sellingCostPct?: number;
+  closingCostBuyPct?: number;
+  marginalTaxRatePct?: number;
+  horizonYears: number;
+  useTaxShield?: boolean;
+}
 
 export const defaultInputs: CoreInputs = {
-    purchasePrice: 750000,
-    downPaymentPct: 0.20,
-    mortgageRatePct: 0.0625,
-    mortgageTermYears: 30,
-    monthlyRent: 3500,
-    altReturnPct: 0.06,
-    propertyTaxPct: 0.0125,
-    homeAppreciationPct: 0.03,
-    maintenancePct: 0.01,
-    insuranceHOAAnnual: 1800,
-    rentInflationPct: 0.03,
-    generalInflationPct: 0.025,
-    sellingCostPct: 0.06,
-    closingCostBuyPct: 0.025,
-    marginalTaxRatePct: 0.28,
-    horizonYears: 7,
-    useTaxShield: true,
+  purchasePrice: 750000,
+  downPaymentPct: 0.2,
+  mortgageRatePct: 0.0625,
+  mortgageTermYears: 30,
+  monthlyRent: 3500,
+  altReturnPct: 0.06,
+  propertyTaxPct: 0.0125,
+  homeAppreciationPct: 0.03,
+  maintenancePct: 0.01,
+  insuranceHOAAnnual: 1800,
+  rentInflationPct: 0.03,
+  generalInflationPct: 0.025,
+  sellingCostPct: 0.06,
+  closingCostBuyPct: 0.025,
+  marginalTaxRatePct: 0.25,
+  horizonYears: 7,
+  useTaxShield: true,
 };
 
 export interface YearlyData {
-    year: number;
-    buyTotalCost: number;
-    rentTotalCost: number;
-    buyEquity: number;
-    rentPortfolioValue: number;
-    buyNetCost: number;
-    rentNetCost: number;
+  year: number;
+  buyTotalCost: number;
+  rentTotalCost: number;
+  buyEquity: number;
+  rentPortfolioValue: number;
+  buyNetCost: number;
+  rentNetCost: number;
 }
-  
+
 export interface CalculationOutput {
-    yearlyData: YearlyData[];
-    buyTotalCost: number;
-    rentTotalCost: number;
-    buyNpv: number;
-    rentNpv: number;
-    breakEvenYear: number | null;
+  yearlyData: YearlyData[];
+  buyTotalCost: number;
+  rentTotalCost: number;
+  buyNpv: number;
+  rentNpv: number;
+  breakEvenYear: number | null;
 } 
