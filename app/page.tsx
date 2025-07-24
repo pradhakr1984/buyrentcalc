@@ -17,7 +17,9 @@ export default function Home() {
   const [results, setResults] = useState<CalculationOutput | null>(null);
 
   useEffect(() => {
-    setResults(calculate(watchedInputs));
+    if (watchedInputs && Object.values(watchedInputs).every(val => val !== undefined)) {
+      setResults(calculate(watchedInputs));
+    }
   }, [watchedInputs]);
 
   const formatCurrency = (value: number) =>
@@ -76,6 +78,21 @@ export default function Home() {
                 max={0.15}
                 step={0.0001}
                 isPercentage
+              />
+            )}
+          />
+          <Controller
+            name="mortgageTermYears"
+            control={control}
+            render={({ field }) => (
+              <InputField
+                label="Mortgage Term (Years)"
+                value={field.value || 0}
+                setValue={field.onChange}
+                min={15}
+                max={30}
+                step={1}
+                isCurrency={false}
               />
             )}
           />
