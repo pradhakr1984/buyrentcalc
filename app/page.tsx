@@ -17,8 +17,13 @@ export default function Home() {
   const [results, setResults] = useState<CalculationOutput | null>(null);
 
   useEffect(() => {
-    if (watchedInputs && Object.values(watchedInputs).every(val => val !== undefined)) {
-      setResults(calculate(watchedInputs));
+    if (watchedInputs) {
+      // Ensure all required fields have values
+      const validInputs = {
+        ...defaultInputs,
+        ...watchedInputs,
+      };
+      setResults(calculate(validInputs));
     }
   }, [watchedInputs]);
 
@@ -43,7 +48,7 @@ export default function Home() {
             render={({ field }) => (
               <InputField
                 label="Purchase Price"
-                value={field.value || 0}
+                value={Number(field.value) || defaultInputs.purchasePrice}
                 setValue={field.onChange}
                 min={100000}
                 max={3000000}
@@ -57,7 +62,7 @@ export default function Home() {
             render={({ field }) => (
               <InputField
                 label="Down Payment %"
-                value={field.value || 0}
+                value={Number(field.value) || defaultInputs.downPaymentPct}
                 setValue={field.onChange}
                 min={0}
                 max={1}
@@ -72,7 +77,7 @@ export default function Home() {
             render={({ field }) => (
               <InputField
                 label="Mortgage Rate % (APR)"
-                value={field.value || 0}
+                value={Number(field.value) || defaultInputs.mortgageRatePct}
                 setValue={field.onChange}
                 min={0}
                 max={0.15}
@@ -87,7 +92,7 @@ export default function Home() {
             render={({ field }) => (
               <InputField
                 label="Mortgage Term (Years)"
-                value={field.value || 0}
+                value={Number(field.value) || defaultInputs.mortgageTermYears}
                 setValue={field.onChange}
                 min={15}
                 max={30}
@@ -102,7 +107,7 @@ export default function Home() {
             render={({ field }) => (
               <InputField
                 label="Rent (monthly)"
-                value={field.value || 0}
+                value={Number(field.value) || defaultInputs.monthlyRent}
                 setValue={field.onChange}
                 min={500}
                 max={10000}
@@ -116,7 +121,7 @@ export default function Home() {
             render={({ field }) => (
               <InputField
                 label="Alt. Investment Return %"
-                value={field.value || 0}
+                value={Number(field.value) || defaultInputs.altReturnPct}
                 setValue={field.onChange}
                 min={0}
                 max={0.15}
@@ -131,7 +136,7 @@ export default function Home() {
             render={({ field }) => (
               <InputField
                 label="Property Tax Rate %"
-                value={field.value || 0}
+                value={Number(field.value) || defaultInputs.propertyTaxPct}
                 setValue={field.onChange}
                 min={0}
                 max={0.05}
@@ -146,7 +151,7 @@ export default function Home() {
             render={({ field }) => (
               <InputField
                 label="Home Price Appreciation %"
-                value={field.value || 0}
+                value={Number(field.value) || defaultInputs.homeAppreciationPct}
                 setValue={field.onChange}
                 min={-0.05}
                 max={0.15}
@@ -161,7 +166,7 @@ export default function Home() {
             render={({ field }) => (
               <InputField
                 label="Time Horizon (Years)"
-                value={field.value || 0}
+                value={Number(field.value) || defaultInputs.horizonYears}
                 setValue={field.onChange}
                 min={1}
                 max={30}
